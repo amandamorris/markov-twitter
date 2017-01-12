@@ -1,7 +1,5 @@
 from random import choice
 import sys
-import os
-import twitter
 
 
 def open_and_read_file(file_path):
@@ -69,38 +67,21 @@ def make_text(chains, ngram_num):
             sentence += " " + follow_word
         else:
             for i in range(1, len(sentence)):
-                if sentence[-i-1] == " ":#in terminal_punct:
-                    return sentence[:-i-1]
+                if sentence[-i-1] in terminal_punct:#in terminal_punct:
+                    return sentence[:-i]
             print "Our randomly-generated text has no terminal punctuation in the first {} characters.".format(max_length)
-            return
+            return sentence
 
+# input_path = sys.argv[1]
+# ngram_num = int(sys.argv[2])
 
-def push_tweet(tweets):
+# input_text = open_and_read_file(input_path)
+# #print input_text
 
-    api = twitter.Api(consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
-                      consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
-                      access_token_key=os.environ['TWITTER_ACCESS_TOKEN_KEY'],
-                      access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
-    print api.VerifyCredentials()
-    status = api.PostUpdate(tweets)
-    print status.text
+# # Get a Markov chain
+# chains = make_chains(input_text, ngram_num)
 
-input_path = sys.argv[1]
-ngram_num = int(sys.argv[2])
-
-# Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
-#print input_text
-
-# Get a Markov chain
-chains = make_chains(input_text, ngram_num)
-#print chains
-# # Produce random text
-while True:
-    random_text = make_text(chains, ngram_num)
-    print random_text
-    push_tweet(random_text)
-    retweet = raw_input("Press Enter if you'd like to tweet another line or q to quit. ")
-    if retweet == "q":
-        break
+# random_text = make_text(chains, ngram_num)
 # print random_text
+
+
